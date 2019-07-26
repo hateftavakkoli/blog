@@ -20,7 +20,7 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    @RequestMapping("/newUser")
+    @RequestMapping("/addUser")
     public Users insert(@RequestBody Users users) {
         return usersService.registerUser(users);
     }
