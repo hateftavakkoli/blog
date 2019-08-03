@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/categories")
 public class CategoryController {
 
     private CategoryService categoryService;
@@ -29,7 +29,7 @@ public class CategoryController {
     }
 
     @RequestMapping(value = {"/",""}, method = RequestMethod.POST)
-    public Category registerUser(@RequestBody Category category) {
+    public Category registerCategory(@RequestBody Category category) {
         return categoryService.registerCategory(category);
     }
 

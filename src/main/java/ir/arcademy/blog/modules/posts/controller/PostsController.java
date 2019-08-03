@@ -23,13 +23,13 @@ public class PostsController {
         this.postsService = postsService;
     }
 
-    @RequestMapping(value = {"/",""}, method = RequestMethod.GET)
-    public List<Posts> getUsers() {
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public List<Posts> getPosts() {
         return postsService.findAllPosts();
     }
 
     @RequestMapping(value = {"/",""}, method = RequestMethod.POST)
-    public Posts registerUser(@RequestBody Posts posts) {
+    public Posts registerPost(@RequestBody Posts posts) {
         return postsService.registerPost(posts);
     }
 

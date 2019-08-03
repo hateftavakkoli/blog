@@ -1,8 +1,12 @@
 package ir.arcademy.blog.modules.users.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import ir.arcademy.blog.modules.posts.model.Posts;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users_tbl")
@@ -17,6 +21,9 @@ public class Users {
     private String password;
     private String name;
     private String cover;
+
+    @OneToMany(mappedBy = "users")
+    private List<Posts> posts;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -72,6 +79,14 @@ public class Users {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public List<Posts> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Posts> posts) {
+        this.posts = posts;
     }
 
     public LocalDateTime getCreatedAt() {

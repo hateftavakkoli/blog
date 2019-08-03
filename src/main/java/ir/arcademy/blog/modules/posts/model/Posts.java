@@ -1,5 +1,9 @@
 package ir.arcademy.blog.modules.posts.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import ir.arcademy.blog.modules.users.model.Users;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -14,6 +18,11 @@ public class Posts {
     private String title;
     private String body;
     private String cover;
+
+    @ManyToOne
+    @JoinColumn(name = "user_fk")
+    private Users users;
+
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -66,6 +75,14 @@ public class Posts {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
     public LocalDateTime getCreatedAt() {
