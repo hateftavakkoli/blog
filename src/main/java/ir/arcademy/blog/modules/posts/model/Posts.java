@@ -1,7 +1,9 @@
 package ir.arcademy.blog.modules.posts.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import ir.arcademy.blog.modules.users.model.Users;
 
 import javax.persistence.*;
@@ -9,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "posts_tbl")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Posts {
 
     @Id

@@ -1,7 +1,7 @@
 package ir.arcademy.blog.modules.users.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 import ir.arcademy.blog.modules.posts.model.Posts;
 
 import javax.persistence.*;
@@ -10,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users_tbl")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Users {
 
     @Id
