@@ -1,10 +1,15 @@
 package ir.arcademy.blog.modules.posts.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "category_tbl")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Category {
 
     @Id
@@ -12,6 +17,9 @@ public class Category {
     private Long id;
 
     private String title;
+
+    @ManyToMany(mappedBy = "categories")
+    private List<Posts> posts;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -49,6 +57,14 @@ public class Category {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Posts> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Posts> posts) {
+        this.posts = posts;
     }
 
     public LocalDateTime getUpdatedAt() {

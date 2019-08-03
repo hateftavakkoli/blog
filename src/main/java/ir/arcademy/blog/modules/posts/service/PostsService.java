@@ -1,5 +1,6 @@
 package ir.arcademy.blog.modules.posts.service;
 
+import ir.arcademy.blog.modules.posts.model.Category;
 import ir.arcademy.blog.modules.posts.model.Posts;
 import ir.arcademy.blog.modules.posts.repository.PostsRepository;
 import ir.arcademy.blog.modules.users.model.Users;
@@ -18,6 +19,7 @@ public class PostsService {
     public PostsService(PostsRepository postsRepository) {
         this.postsRepository = postsRepository;
     }
+
 
     public Posts registerPost(Posts posts) {
         return this.postsRepository.save(posts);
