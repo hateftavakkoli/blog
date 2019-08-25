@@ -14,7 +14,8 @@
 
     <a class="text-dark" href="#" th:each="post : ${posts}">
         <div class="card mr-3 mb-4" style="width: 18rem; float: left;">
-            <img alt="Card image cap" class="card-img-top border-bottom border-secondary" src="img/1.png">
+            <img alt="Card image cap" class="card-img-top border-bottom border-secondary"
+                 th:src="@{/img/1.png}">
             <div class="card-body">
                 <h5 class="card-title" th:text="${post.getTitle()}"></h5>
                 <p class="card-text text-truncate" th:text="${post.getBody()}">

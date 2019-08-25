@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -23,6 +24,9 @@ public class PostsService {
 
     @Transactional
     public Posts registerPost(Posts posts) {
+
+
+
         return this.postsRepository.save(posts);
     }
 
