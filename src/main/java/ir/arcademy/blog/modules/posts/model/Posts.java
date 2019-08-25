@@ -38,7 +38,6 @@ public class Posts {
     @JoinTable(name = "post_category")
     private List<Category> categories;
 
-
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
