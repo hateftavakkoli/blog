@@ -13,9 +13,10 @@
 <div class="container-fluid mt-3 pl-5 pr-5" style="background-color: gray">
 
     <a class="text-dark" href="#" th:each="post : ${posts}">
-        <div class="card mr-3 mb-4" style="width: 18rem; float: left;">
+        <div class="card mr-3 mb-4" style="width: 17rem; float: left; ">
             <img alt="Card image cap" class="card-img-top border-bottom border-secondary"
-                 th:src="@{/img/1.png}">
+                 style="width: 16.8rem; height: 16rem; object-fit: contain; margin: auto;"
+                 th:src="'/img/' + ${post.getCover()}">
             <div class="card-body">
                 <h5 class="card-title" th:text="${post.getTitle()}"></h5>
                 <p class="card-text text-truncate" th:text="${post.getBody()}">

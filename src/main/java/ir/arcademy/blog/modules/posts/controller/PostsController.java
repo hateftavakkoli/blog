@@ -5,6 +5,9 @@ import ir.arcademy.blog.modules.posts.service.PostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -25,7 +28,7 @@ public class PostsController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public String registerPosts(@ModelAttribute Posts posts) {
+    public String registerPosts(@ModelAttribute Posts posts) throws IOException {
         postsService.registerPost(posts);
         return "posts/registerPosts";
     }
@@ -39,7 +42,7 @@ public class PostsController {
 
     @RequestMapping(value = "/rest", method = RequestMethod.POST)
     public @ResponseBody
-    Posts registerPost(@RequestBody Posts posts) {
+    Posts registerPost(@RequestBody Posts posts) throws IOException {
         return postsService.registerPost(posts);
     }
 
