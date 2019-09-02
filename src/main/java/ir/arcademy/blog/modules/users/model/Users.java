@@ -3,6 +3,8 @@ package ir.arcademy.blog.modules.users.model;
 
 import com.fasterxml.jackson.annotation.*;
 import ir.arcademy.blog.modules.posts.model.Posts;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,9 +29,11 @@ public class Users {
     private List<Posts> posts;
 
     @Column(name = "created_at")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     public Users() {
