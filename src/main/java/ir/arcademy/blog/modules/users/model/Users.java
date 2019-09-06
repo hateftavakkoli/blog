@@ -3,20 +3,18 @@ package ir.arcademy.blog.modules.users.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import ir.arcademy.blog.enums.Roles;
 import ir.arcademy.blog.modules.posts.model.Posts;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "users_tbl")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Users implements Serializable {
+public class Users {
 
     @Id
     @GeneratedValue
@@ -27,13 +25,6 @@ public class Users implements Serializable {
     private String password;
     private String name;
     private String cover;
-
-    private boolean enabled = true;
-
-    @ElementCollection(targetClass = Roles.class)
-    @CollectionTable(name = "authorities", joinColumns =
-    @JoinColumn(name = "email", referencedColumnName = "email"))
-    private List<Roles> roles;
 
     @OneToMany(mappedBy = "users")
     private List<Posts> posts;
@@ -55,22 +46,6 @@ public class Users implements Serializable {
         this.password = password;
         this.name = name;
         this.cover = cover;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public List<Roles> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Roles> roles) {
-        this.roles = roles;
     }
 
     public Long getId() {
