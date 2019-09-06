@@ -23,24 +23,23 @@ public class PostsController {
 
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String showRegisterPosts() {
+    public String posts() {
+        return "posts/posts";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String registerPage() {
         return "posts/registerPosts";
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public String registerPosts(@ModelAttribute Posts posts) throws IOException {
-        postsService.registerPost(posts);
-        return "posts/registerPosts";
-    }
 
-
-    @RequestMapping(value = "/rest", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/getPosts", method = RequestMethod.GET)
     public @ResponseBody
     List<Posts> getPosts() {
         return postsService.findAllPosts();
     }
 
-    @RequestMapping(value = "/rest", method = RequestMethod.POST)
+    @RequestMapping(value = "/rest/register", method = RequestMethod.POST)
     public @ResponseBody
     Posts registerPost(@RequestBody Posts posts) throws IOException {
         return postsService.registerPost(posts);
