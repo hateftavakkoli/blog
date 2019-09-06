@@ -28,4 +28,8 @@ public class MainController {
         return "login";
     }
 
+    @RequestMapping(value = "/403" , method = RequestMethod.GET)
+    public String accessDenied() {
+        return "403";
+    }
 }
