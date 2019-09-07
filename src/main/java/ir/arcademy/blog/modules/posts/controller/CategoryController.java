@@ -21,8 +21,7 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String categories(Model model) {
-        model.addAttribute("categories", categoryService.findAllCategories());
+    public String categories() {
         return "categories/categories";
     }
 
