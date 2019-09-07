@@ -4,10 +4,8 @@ import ir.arcademy.blog.modules.posts.model.Category;
 import ir.arcademy.blog.modules.posts.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,14 +20,21 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @RequestMapping(value = "" , method = RequestMethod.GET)
-    public String categories() {
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String categories(Model model) {
+        model.addAttribute("categories", categoryService.findAllCategories());
         return "categories/categories";
     }
 
-    @RequestMapping(value = "/register" , method = RequestMethod.GET)
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerPage() {
         return "categories/registerCategories";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(@ModelAttribute Category category) {
+        categoryService.registerCategory(category);
+        return "redirect:/categories";
     }
 
     @RequestMapping(value = "/rest/getCategories", method = RequestMethod.GET)
