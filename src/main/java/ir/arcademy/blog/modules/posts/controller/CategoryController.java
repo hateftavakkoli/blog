@@ -21,18 +21,32 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String categories() {
+    public String categories(Model model) {
+        model.addAttribute("categories",categoryService.findAllCategories());
         return "categories/categories";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String registerPage() {
+    public String registerPage(Model model) {
+        model.addAttribute("category", new Category());
         return "categories/registerCategories";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@ModelAttribute Category category) {
         categoryService.registerCategory(category);
+        return "redirect:/categories";
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String editPage(Model model ,@PathVariable("id") Long id) {
+        model.addAttribute("category", categoryService.findById(id));
+        return "categories/registerCategories";
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String editPage(@PathVariable("id") Long id) {
+        categoryService.deleteById(id);
         return "redirect:/categories";
     }
 

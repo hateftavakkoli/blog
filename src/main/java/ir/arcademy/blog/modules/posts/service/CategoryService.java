@@ -26,4 +26,13 @@ public class CategoryService {
     public List<Category> findAllCategories() {
         return this.categoryRepository.findAll();
     }
+
+    public Category findById(Long id) {
+        return categoryRepository.getOne(id);
+    }
+
+    @Transactional
+    public void deleteById(Long id) {
+        categoryRepository.deleteById(id);
+    }
 }
