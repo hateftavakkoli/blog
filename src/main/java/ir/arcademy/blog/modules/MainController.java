@@ -23,12 +23,12 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = "/login" , method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "login";
     }
 
-    @RequestMapping(value = "/403" , method = RequestMethod.GET)
+    @RequestMapping(value = "/403", method = RequestMethod.GET)
     public String accessDenied() {
         return "403";
     }

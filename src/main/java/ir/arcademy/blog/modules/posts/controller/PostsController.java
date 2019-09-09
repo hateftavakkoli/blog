@@ -2,6 +2,7 @@ package ir.arcademy.blog.modules.posts.controller;
 
 import ir.arcademy.blog.modules.posts.model.Posts;
 import ir.arcademy.blog.modules.posts.service.PostsService;
+import ir.arcademy.blog.modules.users.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,11 @@ public class PostsController {
         return "posts/registerPosts";
     }
 
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(@ModelAttribute Posts posts) throws IOException {
+        postsService.registerPost(posts);
+        return "redirect:/";
+    }
 
     @RequestMapping(value = "/rest/getPosts", method = RequestMethod.GET)
     public @ResponseBody

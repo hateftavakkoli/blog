@@ -4,10 +4,16 @@ import ir.arcademy.blog.modules.users.model.Users;
 import ir.arcademy.blog.modules.users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class UsersService {
@@ -20,7 +26,12 @@ public class UsersService {
     }
 
     @Transactional
-    public Users registerUser(Users users) {
+    public Users registerUser(Users users) throws IOException {
+        String path = ResourceUtils.getFile("classpath:static/img").getAbsolutePath();
+        byte[] bytes = users.getFile().getBytes();
+        String name = UUID.randomUUID() + "." + Objects.requireNonNull(users.getFile().getContentType()).split("/")[1];
+        Files.write(Paths.get(path + File.separator + name), bytes);
+        users.setCover(name);
         return this.usersRepository.save(users);
     }
 

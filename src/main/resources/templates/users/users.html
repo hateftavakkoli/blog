@@ -27,19 +27,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>hatef@arcademy.ir</td>
-            <td>Hatef</td>
-            <td>
-                <a class="btn btn-success" href="#" style="width: 80px">Edit</a>
-                <a class="btn btn-danger" href="#" style="width: 80px">Delete</a>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>ali@arcademy.ir</td>
-            <td>Ali</td>
+        <tr th:each="user : ${users}">
+            <th scope="row" th:text="${user.getId()}"></th>
+            <td th:text="${user.getEmail()}"></td>
+            <td th:text="${user.getName()}"></td>
             <td>
                 <a class="btn btn-success" href="#" style="width: 80px">Edit</a>
                 <a class="btn btn-danger" href="#" style="width: 80px">Delete</a>

@@ -2,11 +2,13 @@ package ir.arcademy.blog.modules.users.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import ir.arcademy.blog.enums.Roles;
 import ir.arcademy.blog.modules.posts.model.Posts;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,13 +33,17 @@ public class Users implements Serializable {
     private boolean enabled = true;
 
     @ElementCollection(targetClass = Roles.class)
-    @CollectionTable(name = "authorities" , joinColumns =
+    @CollectionTable(name = "authorities", joinColumns =
     @JoinColumn(name = "email", referencedColumnName = "email"))
     @Enumerated(EnumType.STRING)
     private List<Roles> roles;
 
     @OneToMany(mappedBy = "users")
     private List<Posts> posts;
+
+    @Transient
+    @JsonIgnore
+    private MultipartFile file;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -56,6 +62,14 @@ public class Users implements Serializable {
         this.password = password;
         this.name = name;
         this.cover = cover;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
     public boolean isEnabled() {
