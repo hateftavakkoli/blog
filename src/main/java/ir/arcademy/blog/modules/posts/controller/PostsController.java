@@ -5,6 +5,7 @@ import ir.arcademy.blog.modules.posts.service.PostsService;
 import ir.arcademy.blog.modules.users.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
@@ -29,7 +30,8 @@ public class PostsController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String registerPage() {
+    public String registerPage(Model model) {
+        model.addAttribute("post", new Posts());
         return "posts/registerPosts";
     }
 
@@ -37,6 +39,18 @@ public class PostsController {
     public String register(@ModelAttribute Posts posts) throws IOException {
         postsService.registerPost(posts);
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String editPage(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("post", postsService.findById(id));
+        return "posts/registerPosts";
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String delete(@PathVariable("id") Long id) {
+        postsService.deleteById(id);
+        return "redirect:/posts";
     }
 
     @RequestMapping(value = "/rest/getPosts", method = RequestMethod.GET)

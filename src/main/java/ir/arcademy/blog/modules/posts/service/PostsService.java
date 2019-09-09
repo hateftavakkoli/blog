@@ -45,4 +45,12 @@ public class PostsService {
     }
 
 
+    public Posts findById(Long id) {
+        return postsRepository.getOne(id);
+    }
+
+    @Transactional
+    public void deleteById(Long id) {
+        postsRepository.deleteById(id);
+    }
 }
