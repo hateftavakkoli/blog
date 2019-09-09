@@ -32,8 +32,8 @@
             <td th:text="${user.getEmail()}"></td>
             <td th:text="${user.getName()}"></td>
             <td>
-                <a class="btn btn-success" href="#" style="width: 80px">Edit</a>
-                <a class="btn btn-danger" href="#" style="width: 80px">Delete</a>
+                <a class="btn btn-success" th:href="@{/users/edit/{id}(id=${user.getId()})}" style="width: 80px">Edit</a>
+                <a class="btn btn-danger" th:href="@{/users/delete/{id}(id=${user.getId()})}" style="width: 80px">Delete</a>
             </td>
         </tr>
         </tbody>

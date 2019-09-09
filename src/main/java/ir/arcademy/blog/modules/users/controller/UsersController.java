@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @Controller
@@ -33,8 +34,20 @@ public class UsersController {
         return "users/registerUser";
     }
 
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String registerPage(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("user", usersService.findById(id));
+        return "users/registerUser";
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String delete(@PathVariable("id") Long id) {
+        usersService.deleteById(id);
+        return "redirect:/users";
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@ModelAttribute Users users) throws IOException {
+    public String register(@ModelAttribute Users users) throws IOException, InvocationTargetException, IllegalAccessException {
         usersService.registerUser(users);
         return "redirect:/users";
     }
@@ -47,7 +60,7 @@ public class UsersController {
 
     @RequestMapping(value = "/rest/register", method = RequestMethod.POST)
     public @ResponseBody
-    Users registerUser(@RequestBody Users users) throws IOException {
+    Users registerUser(@RequestBody Users users) throws IOException, InvocationTargetException, IllegalAccessException {
         return usersService.registerUser(users);
     }
 
