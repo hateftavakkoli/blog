@@ -1,3 +1,13 @@
 a.text-dark:hover .card-body {
     color: #00aae7 !important;
 }
+
+.validation {
+    margin-top: 5px;
+    color: #e8200e;
+}
+
+.validation:before {
+    content: '*';
+    margin-right: 3px;
+}

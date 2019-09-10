@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Posts</title>
     <div th:replace="fragment/layout::head"></div>
 </head>
@@ -12,7 +13,7 @@
 
 <div class="container-fluid m-0 p-4">
 
-    <a th:href="@{/posts/register}" class="mb-2 btn btn-primary" style="width: 100px">
+    <a class="mb-2 btn btn-primary" style="width: 100px" th:href="@{/posts/register}">
         NEW
     </a>
 
@@ -25,30 +26,56 @@
             <th scope="col">Categories</th>
             <th scope="col">Created By</th>
             <th scope="col">Created Date</th>
+            <th scope="col">Updated Date</th>
             <th scope="col">Operation</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Test Title</td>
-            <td>Varzeshi</td>
-            <td>Hatef</td>
-            <td>2019-08-01 12:00</td>
+        <tr th:each="post : ${posts}">
+            <th scope="row" th:text="${post.getId()}"></th>
+            <td th:text="${post.getTitle()}"></td>
             <td>
-                <a class="btn btn-success" href="#" style="width: 80px">Edit</a>
-                <a class="btn btn-danger" href="#" style="width: 80px">Delete</a>
+                <ul>
+                    <li th:each="category : ${post.getCategories()}"
+                        th:text="${category.getTitle()}"></li>
+                </ul>
             </td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Test Title 2</td>
-            <td>Farhangi</td>
-            <td>Ali</td>
-            <td>2019-08-04 22:00</td>
+            <td th:text="${post.getUsers().getName()}"></td>
+            <td th:text="${#temporals.format(post.getCreatedAt(),'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(post.getUpdatedAt(),'yyyy-MM-dd HH:mm')}"></td>
             <td>
-                <a class="btn btn-success" href="#" style="width: 80px">Edit</a>
-                <a class="btn btn-danger" href="#" style="width: 80px">Delete</a>
+                <a class="btn btn-success"
+                   style="width: 80px" th:href="@{/posts/edit/{id}(id=${post.getId()})}">Edit</a>
+
+                <a class="btn btn-danger"
+                   data-toggle="modal"
+                   href="#"
+                   style="width: 80px" th:data-target="'#delete'+${post.getId()}">
+                    Delete
+                </a>
+
+                <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" role="dialog"
+                     tabindex="-1" th:id="'delete'+${post.getId()}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Delete Post</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <span th:text="'Are You Sure to Delete '"></span>
+                                <strong th:text="${post.getTitle()}"></strong>
+                                <span th:text="' ?'"></span>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                                <a class="btn btn-danger" th:href="@{/posts/delete/{id}(id=${post.getId()})}">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
         </tbody>
@@ -57,4 +84,5 @@
 </div>
 
 
-</body></html>
+</body>
+</html>

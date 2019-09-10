@@ -49,7 +49,10 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body" th:text="'Are You Sure to Delete ' + ${category.getTitle()} + ' ?'">
+                            <div class="modal-body">
+                                <span th:text="'Are You Sure to Delete '"></span>
+                                <strong th:text="${category.getTitle()}"></strong>
+                                <span th:text="' ?'"></span>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>

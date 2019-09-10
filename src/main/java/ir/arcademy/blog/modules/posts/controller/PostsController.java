@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @Controller
@@ -25,7 +26,8 @@ public class PostsController {
 
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String posts() {
+    public String posts(Model model) {
+        model.addAttribute("posts", postsService.findAllPosts());
         return "posts/posts";
     }
 
@@ -36,7 +38,7 @@ public class PostsController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@ModelAttribute Posts posts) throws IOException {
+    public String register(@ModelAttribute Posts posts) throws IOException, InvocationTargetException, IllegalAccessException {
         postsService.registerPost(posts);
         return "redirect:/";
     }
@@ -61,7 +63,7 @@ public class PostsController {
 
     @RequestMapping(value = "/rest/register", method = RequestMethod.POST)
     public @ResponseBody
-    Posts registerPost(@RequestBody Posts posts) throws IOException {
+    Posts registerPost(@RequestBody Posts posts) throws IOException, InvocationTargetException, IllegalAccessException {
         return postsService.registerPost(posts);
     }
 

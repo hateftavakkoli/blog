@@ -1,5 +1,6 @@
 package ir.arcademy.blog.modules.posts.service;
 
+import ir.arcademy.blog.MyBeanCopy;
 import ir.arcademy.blog.modules.posts.model.Category;
 import ir.arcademy.blog.modules.posts.model.Posts;
 import ir.arcademy.blog.modules.posts.repository.PostsRepository;
@@ -13,6 +14,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,12 +33,21 @@ public class PostsService {
     }
 
     @Transactional
-    public Posts registerPost(Posts posts) throws IOException {
-        String path = ResourceUtils.getFile("classpath:static/img").getAbsolutePath();
-        byte[] bytes = posts.getFile().getBytes();
-        String name = UUID.randomUUID() + "." + Objects.requireNonNull(posts.getFile().getContentType()).split("/")[1];
-        Files.write(Paths.get(path + File.separator + name), bytes);
-        posts.setCover(name);
+    public Posts registerPost(Posts posts) throws IOException, InvocationTargetException, IllegalAccessException {
+
+        if (!posts.getFile().isEmpty()) {
+            String path = ResourceUtils.getFile("classpath:static/img").getAbsolutePath();
+            byte[] bytes = posts.getFile().getBytes();
+            String name = UUID.randomUUID() + "." + Objects.requireNonNull(posts.getFile().getContentType()).split("/")[1];
+            Files.write(Paths.get(path + File.separator + name), bytes);
+            posts.setCover(name);
+        }
+        if (posts.getId() != null) {
+            Posts exist = postsRepository.getOne(posts.getId());
+            MyBeanCopy myBeanCopy = new MyBeanCopy();
+            myBeanCopy.copyProperties(exist,posts);
+            return postsRepository.save(exist);
+        }
         return this.postsRepository.save(posts);
     }
 
