@@ -32,17 +32,19 @@
         </thead>
         <tbody>
         <tr th:each="post : ${posts}">
-            <th scope="row" th:text="${post.getId()}"></th>
-            <td th:text="${post.getTitle()}"></td>
+            <th scope="row" th:text="${post.id}"></th>
+            <td th:text="${post.title}"></td>
+
             <td>
                 <ul>
-                    <li th:each="category : ${post.getCategories()}"
-                        th:text="${category.getTitle()}"></li>
+                    <li th:each="category : ${post.categories}" th:text="${category.title}"></li>
                 </ul>
             </td>
-            <td th:text="${post.getUsers().getName()}"></td>
-            <td th:text="${#temporals.format(post.getCreatedAt(),'yyyy-MM-dd HH:mm')}"></td>
-            <td th:text="${#temporals.format(post.getUpdatedAt(),'yyyy-MM-dd HH:mm')}"></td>
+
+            <td th:text="${post.users != null} ? ${post.users.name} : '---'"></td>
+
+            <td th:text="${#temporals.format(post.createdAt,'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(post.updatedAt,'yyyy-MM-dd HH:mm')}"></td>
             <td>
                 <a class="btn btn-success"
                    style="width: 80px" th:href="@{/posts/edit/{id}(id=${post.getId()})}">Edit</a>

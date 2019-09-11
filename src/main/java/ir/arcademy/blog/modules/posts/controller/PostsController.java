@@ -1,8 +1,11 @@
 package ir.arcademy.blog.modules.posts.controller;
 
 import ir.arcademy.blog.modules.posts.model.Posts;
+import ir.arcademy.blog.modules.posts.service.CategoryService;
 import ir.arcademy.blog.modules.posts.service.PostsService;
 import ir.arcademy.blog.modules.users.model.Users;
+import ir.arcademy.blog.modules.users.service.UsersService;
+import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.Principal;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -18,10 +25,14 @@ import java.util.List;
 public class PostsController {
 
     private PostsService postsService;
+    private CategoryService categoryService;
+    private UsersService usersService;
 
     @Autowired
-    public PostsController(PostsService postsService) {
+    public PostsController(PostsService postsService, CategoryService categoryService, UsersService usersService) {
         this.postsService = postsService;
+        this.categoryService = categoryService;
+        this.usersService = usersService;
     }
 
 
@@ -34,18 +45,21 @@ public class PostsController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerPage(Model model) {
         model.addAttribute("post", new Posts());
+        model.addAttribute("categories", categoryService.findAllCategories());
         return "posts/registerPosts";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@ModelAttribute Posts posts) throws IOException, InvocationTargetException, IllegalAccessException {
+    public String register(@ModelAttribute Posts posts, Principal principal) throws IOException, InvocationTargetException, IllegalAccessException {
+        posts.setUsers(usersService.findByEmail(principal.getName()));
         postsService.registerPost(posts);
-        return "redirect:/";
+        return "redirect:/posts";
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String editPage(Model model, @PathVariable("id") Long id) {
         model.addAttribute("post", postsService.findById(id));
+        model.addAttribute("categories", categoryService.findAllCategories());
         return "posts/registerPosts";
     }
 

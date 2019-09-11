@@ -28,11 +28,10 @@
         <div class="form-group row">
             <label class="col-form-label col-sm-3" for="cat">Categories : </label>
             <div class="col-sm-9">
-                <select class="selectpicker" id="cat" multiple>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
+                <select class="selectpicker" id="cat" multiple th:field="*{categories}">
+                    <option th:each="category : ${categories}"
+                            th:text="${category.title}"
+                            th:value="${category.id}"></option>
                 </select>
             </div>
         </div>
