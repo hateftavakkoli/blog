@@ -1,36 +1,24 @@
 package ir.arcademy.blog.modules.posts.controller;
 
 import ir.arcademy.blog.modules.posts.model.Posts;
-import ir.arcademy.blog.modules.posts.repository.PostsRepository;
 import ir.arcademy.blog.modules.posts.service.CategoryService;
 import ir.arcademy.blog.modules.posts.service.PostsService;
-import ir.arcademy.blog.modules.users.model.Users;
 import ir.arcademy.blog.modules.users.service.UsersService;
-import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.Principal;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping("/posts")
 public class PostsController {
-
-    @Autowired
-    private PostsRepository postsRepository;
 
     private PostsService postsService;
     private CategoryService categoryService;
@@ -58,9 +46,12 @@ public class PostsController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@ModelAttribute @Valid Posts posts, Principal principal, BindingResult bindingResult) throws IOException, InvocationTargetException, IllegalAccessException {
-        if (bindingResult.hasErrors())
+    public String register(@ModelAttribute(name = "post") @Valid Posts posts,
+                            BindingResult bindingResult,Model model, Principal principal) throws IllegalAccessException, IOException, InvocationTargetException {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.findAllCategories());
             return "posts/registerPosts";
+        }
 
         posts.setUsers(usersService.findByEmail(principal.getName()));
         postsService.registerPost(posts);
