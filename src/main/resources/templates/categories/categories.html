@@ -25,9 +25,10 @@
             <th scope="col">Operation</th>
         </tr>
         </thead>
+
         <tbody>
         <tr th:each="category : ${categories}">
-            <th scope="row" th:text="${category.getId()}"></th>
+            <th scope="row" th:text="${category.id}"></th>
             <td th:text="${category.getTitle()}"></td>
             <td>
                 <a class="btn btn-success" style="width: 80px"

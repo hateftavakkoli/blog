@@ -1,16 +1,21 @@
 package ir.arcademy.blog.modules.posts.controller;
 
 import ir.arcademy.blog.modules.posts.model.Posts;
+import ir.arcademy.blog.modules.posts.repository.PostsRepository;
 import ir.arcademy.blog.modules.posts.service.CategoryService;
 import ir.arcademy.blog.modules.posts.service.PostsService;
 import ir.arcademy.blog.modules.users.model.Users;
 import ir.arcademy.blog.modules.users.service.UsersService;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -23,6 +28,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/posts")
 public class PostsController {
+
+    @Autowired
+    private PostsRepository postsRepository;
 
     private PostsService postsService;
     private CategoryService categoryService;
@@ -50,7 +58,10 @@ public class PostsController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@ModelAttribute Posts posts, Principal principal) throws IOException, InvocationTargetException, IllegalAccessException {
+    public String register(@ModelAttribute @Valid Posts posts, Principal principal, BindingResult bindingResult) throws IOException, InvocationTargetException, IllegalAccessException {
+        if (bindingResult.hasErrors())
+            return "posts/registerPosts";
+
         posts.setUsers(usersService.findByEmail(principal.getName()));
         postsService.registerPost(posts);
         return "redirect:/posts";
@@ -80,6 +91,4 @@ public class PostsController {
     Posts registerPost(@RequestBody Posts posts) throws IOException, InvocationTargetException, IllegalAccessException {
         return postsService.registerPost(posts);
     }
-
-
 }

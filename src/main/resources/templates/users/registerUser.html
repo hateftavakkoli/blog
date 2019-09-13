@@ -20,6 +20,7 @@
             <label class="col-form-label col-sm-3" for="title">Email : </label>
             <div class="col-sm-9">
                 <input class="form-control" id="title" th:field="*{email}" type="text">
+                <div class="validation" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
             </div>
         </div>
 
@@ -27,6 +28,7 @@
             <label class="col-form-label col-sm-3" for="password">Password : </label>
             <div class="col-sm-9">
                 <input class="form-control" id="password" th:field="*{password}" type="password">
+                <div class="validation" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
             </div>
         </div>
 
@@ -34,6 +36,7 @@
             <label class="col-form-label col-sm-3" for="name">Name : </label>
             <div class="col-sm-9">
                 <input class="form-control" id="name" th:field="*{name}" type="text">
+                <div class="validation" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
             </div>
         </div>
 
@@ -45,6 +48,7 @@
                     th:text="${role}"
                     th:value="${role}"></option>
                 </select>
+                <div class="validation" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
             </div>
         </div>
 

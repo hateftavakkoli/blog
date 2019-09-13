@@ -18,6 +18,7 @@
             <label class="col-form-label col-sm-3" for="title">Title : </label>
             <div class="col-sm-9">
                 <input class="form-control" id="title" th:field="*{title}" type="text">
+                <div class="validation" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
             </div>
         </div>
 

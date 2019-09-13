@@ -5,8 +5,10 @@ import ir.arcademy.blog.modules.posts.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -33,7 +35,10 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@ModelAttribute Category category) {
+    public String register(@ModelAttribute @Valid Category category, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return "categories/registerCategories";
+
         categoryService.registerCategory(category);
         return "redirect:/categories";
     }

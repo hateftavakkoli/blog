@@ -6,15 +6,17 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 import javax.sql.DataSource;
 
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
+
+    public SpringSecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -30,10 +32,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/index", "/css/**", "/js/**", "/img/**")
                 .permitAll()
-                .antMatchers("/users/**","/categories/**")
+                .antMatchers("/users/**", "/categories/**")
                 .hasAuthority("ADMIN")
                 .antMatchers("/posts/**")
-                .hasAnyAuthority("ADMIN","USER")
+                .hasAnyAuthority("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage("/login").usernameParameter("email")

@@ -6,6 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +21,7 @@ public class Category {
     @GeneratedValue
     private Long id;
 
+    @NotBlank(message = "NOT BLANK")
     private String title;
 
     @ManyToMany(mappedBy = "categories")

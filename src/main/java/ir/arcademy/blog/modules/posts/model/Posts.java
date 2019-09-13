@@ -10,6 +10,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,8 +26,12 @@ public class Posts {
     @GeneratedValue
     private Long id;
 
+    @NotBlank
     private String title;
+
+    @NotBlank
     private String body;
+
     private String cover;
 
     @Transient
@@ -36,6 +44,7 @@ public class Posts {
 
     @ManyToMany
     @JoinTable(name = "post_category")
+    @NotEmpty
     private List<Category> categories;
 
     @Column(name = "created_at", updatable = false)

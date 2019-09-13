@@ -22,6 +22,7 @@
             <label class="col-form-label col-sm-3" for="title">Title : </label>
             <div class="col-sm-9">
                 <input class="form-control" id="title" th:field="*{title}" type="text">
+                <div class="validation" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
             </div>
         </div>
 
@@ -33,6 +34,7 @@
                             th:text="${category.title}"
                             th:value="${category.id}"></option>
                 </select>
+                <div class="validation" th:if="${#fields.hasErrors('categories')}" th:errors="*{categories}"></div>
             </div>
         </div>
 
@@ -47,6 +49,7 @@
             <label class="col-form-label col-sm-3" for="body">Body : </label>
             <div class="col-sm-9">
                 <textarea class="form-control" id="body" style="height: 150px;" th:field="*{body}"></textarea>
+                <div class="validation" th:if="${#fields.hasErrors('body')}" th:errors="*{body}"></div>
             </div>
         </div>
 
