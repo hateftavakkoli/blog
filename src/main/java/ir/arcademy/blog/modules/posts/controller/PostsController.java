@@ -5,6 +5,8 @@ import ir.arcademy.blog.modules.posts.service.CategoryService;
 import ir.arcademy.blog.modules.posts.service.PostsService;
 import ir.arcademy.blog.modules.users.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,10 +33,9 @@ public class PostsController {
         this.usersService = usersService;
     }
 
-
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String posts(Model model) {
-        model.addAttribute("posts", postsService.findAllPosts());
+    public String posts(Model model, @PageableDefault(size = 5) Pageable pageable) {
+        model.addAttribute("posts", postsService.findAllPosts(pageable));
         return "posts/posts";
     }
 
@@ -47,7 +48,7 @@ public class PostsController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@ModelAttribute(name = "post") @Valid Posts posts,
-                            BindingResult bindingResult,Model model, Principal principal) throws IllegalAccessException, IOException, InvocationTargetException {
+                           BindingResult bindingResult, Model model, Principal principal) throws IllegalAccessException, IOException, InvocationTargetException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.findAllCategories());
             return "posts/registerPosts";

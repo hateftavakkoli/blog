@@ -7,6 +7,9 @@ import ir.arcademy.blog.modules.posts.repository.PostsRepository;
 import ir.arcademy.blog.modules.users.model.Users;
 import ir.arcademy.blog.modules.users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
@@ -55,6 +58,9 @@ public class PostsService {
         return this.postsRepository.findAll();
     }
 
+    public Page<Posts> findAllPosts(Pageable pageable) {
+        return this.postsRepository.findAll(pageable);
+    }
 
     public Posts findById(Long id) {
         return postsRepository.getOne(id);
