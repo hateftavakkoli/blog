@@ -2,7 +2,6 @@ package ir.arcademy.blog.modules.posts.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import ir.arcademy.blog.modules.users.model.Users;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,8 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,6 +37,7 @@ public class Posts {
 
     @ManyToOne
     @JoinColumn(name = "user_fk")
+    @JsonIgnore
     private Users users;
 
     @ManyToMany
@@ -141,4 +139,5 @@ public class Posts {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }
