@@ -29,7 +29,6 @@
                     th:each="i : ${#numbers.sequence(0, posts.totalPages - 1)}">
                     <a class="page-link" th:href="@{/posts(page=${i})}">[[${i + 1}]]</a></li>
 
-
                 <li class="page-item" th:classappend="${posts.last} ? disabled">
                     <a class="page-link" th:href="@{/posts(page=${posts.number + 1})}">Next</a></li>
             </ul>

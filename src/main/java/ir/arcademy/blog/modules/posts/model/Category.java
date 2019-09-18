@@ -24,6 +24,7 @@ public class Category {
     private String title;
 
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     private List<Posts> posts;
 
     @Column(name = "created_at")

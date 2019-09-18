@@ -39,6 +39,11 @@ public class PostsController {
         return "posts/posts";
     }
 
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public @ResponseBody List<Posts> search(@ModelAttribute Posts posts) {
+        return postsService.findBySearch(posts);
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerPage(Model model) {
         model.addAttribute("post", new Posts());

@@ -70,4 +70,8 @@ public class PostsService {
     public void deleteById(Long id) {
         postsRepository.deleteById(id);
     }
+
+    public List<Posts> findBySearch(Posts posts) {
+        return postsRepository.findBySearch(posts, (posts.getCategories()!= null ? (long) posts.getCategories().size() : 0));
+    }
 }
