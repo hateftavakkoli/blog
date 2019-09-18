@@ -6,6 +6,8 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Posts</title>
     <div th:replace="fragment/layout::head"></div>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-select.min.css}">
+    <script th:src="@{/js/bootstrap-select.min.js}"></script>
 </head>
 <body class="">
 
@@ -27,7 +29,9 @@
                 <li class="page-item"
                     th:classappend="${posts.number == i} ? active"
                     th:each="i : ${#numbers.sequence(0, posts.totalPages - 1)}">
-                    <a class="page-link" th:href="@{/posts(page=${i})}">[[${i + 1}]]</a></li>
+                    <a class="page-link"
+                       th:with="url=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                       th:href="@{${url.replaceQueryParam('page').toUriString()}(page=${i})}">[[${i + 1}]]</a></li>
 
                 <li class="page-item" th:classappend="${posts.last} ? disabled">
                     <a class="page-link" th:href="@{/posts(page=${posts.number + 1})}">Next</a></li>
@@ -36,73 +40,102 @@
 
     </div>
 
+    <form id="searchForm" th:action="@{/posts}" method="get">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Categories</th>
+                <th scope="col">Created By</th>
+                <th scope="col">Created Date</th>
+                <th scope="col">Updated Date</th>
+                <th scope="col">Operation</th>
+            </tr>
+            <tr>
+                <th scope="col"></th>
+                <th><input class="form-control form-control-sm" id="title"
+                           th:value="${p.title}" name="title" type="text"></th>
+                <th style="width: 200px">
+                    <select name="categories" class="selectpicker form-control form-control-sm"
+                            multiple data-selected-text-format="count">
+                        <option th:each="category : ${categories}"
+                                th:selected="${p?.categories?.contains(category)}"
+                                th:text="${category.title}"
+                                th:value="${category.id}"></option>
+                    </select>
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th><button type="submit" class="btn btn-info" style="width: 166px">Search</button> </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${posts}">
+                <th scope="row" th:text="${post.id}"></th>
+                <td th:text="${post.title}"></td>
 
-    <table class="table">
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Title</th>
-            <th scope="col">Categories</th>
-            <th scope="col">Created By</th>
-            <th scope="col">Created Date</th>
-            <th scope="col">Updated Date</th>
-            <th scope="col">Operation</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="post : ${posts}">
-            <th scope="row" th:text="${post.id}"></th>
-            <td th:text="${post.title}"></td>
+                <td>
+                    <ul>
+                        <li th:each="category : ${post.categories}" th:text="${category.title}"></li>
+                    </ul>
+                </td>
 
-            <td>
-                <ul>
-                    <li th:each="category : ${post.categories}" th:text="${category.title}"></li>
-                </ul>
-            </td>
+                <td th:text="${post.users != null} ? ${post.users.name} : '---'"></td>
 
-            <td th:text="${post.users != null} ? ${post.users.name} : '---'"></td>
+                <td th:text="${#temporals.format(post.createdAt,'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${#temporals.format(post.updatedAt,'yyyy-MM-dd HH:mm')}"></td>
+                <td>
+                    <a class="btn btn-success"
+                       style="width: 80px" th:href="@{/posts/edit/{id}(id=${post.getId()})}">Edit</a>
 
-            <td th:text="${#temporals.format(post.createdAt,'yyyy-MM-dd HH:mm')}"></td>
-            <td th:text="${#temporals.format(post.updatedAt,'yyyy-MM-dd HH:mm')}"></td>
-            <td>
-                <a class="btn btn-success"
-                   style="width: 80px" th:href="@{/posts/edit/{id}(id=${post.getId()})}">Edit</a>
+                    <a class="btn btn-danger"
+                       data-toggle="modal"
+                       href="#"
+                       style="width: 80px" th:data-target="'#delete'+${post.getId()}">
+                        Delete
+                    </a>
 
-                <a class="btn btn-danger"
-                   data-toggle="modal"
-                   href="#"
-                   style="width: 80px" th:data-target="'#delete'+${post.getId()}">
-                    Delete
-                </a>
-
-                <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" role="dialog"
-                     tabindex="-1" th:id="'delete'+${post.getId()}">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Delete Post</h5>
-                                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <span th:text="'Are You Sure to Delete '"></span>
-                                <strong th:text="${post.getTitle()}"></strong>
-                                <span th:text="' ?'"></span>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
-                                <a class="btn btn-danger" th:href="@{/posts/delete/{id}(id=${post.getId()})}">Delete</a>
+                    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" role="dialog"
+                         tabindex="-1" th:id="'delete'+${post.getId()}">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Post</h5>
+                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <span th:text="'Are You Sure to Delete '"></span>
+                                    <strong th:text="${post.getTitle()}"></strong>
+                                    <span th:text="' ?'"></span>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                                    <a class="btn btn-danger"
+                                       th:href="@{/posts/delete/{id}(id=${post.getId()})}">Delete</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
 
 </div>
+
+<script type="text/javascript">
+    $("#searchForm").submit(function (e) {
+        let title = $("#title");
+
+        if (title.val() === undefined || title.val() === '')
+            title.attr('name','');
+    })
+</script>
 
 </body>
 </html>

@@ -34,15 +34,17 @@ public class PostsController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String posts(Model model, @PageableDefault(size = 5) Pageable pageable) {
-        model.addAttribute("posts", postsService.findAllPosts(pageable));
+    public String posts(@ModelAttribute("p") Posts posts,
+                        Model model, @PageableDefault(size = 5) Pageable pageable) {
+        model.addAttribute("categories", categoryService.findAllCategories());
+        model.addAttribute("posts", postsService.findBySearch(posts,pageable));
         return "posts/posts";
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public @ResponseBody List<Posts> search(@ModelAttribute Posts posts) {
-        return postsService.findBySearch(posts);
-    }
+//    @RequestMapping(value = "/search", method = RequestMethod.GET)
+//    public @ResponseBody List<Posts> search(@ModelAttribute Posts posts) {
+//        return postsService.findBySearch(posts);
+//    }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerPage(Model model) {

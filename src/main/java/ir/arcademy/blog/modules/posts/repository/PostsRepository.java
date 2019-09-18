@@ -1,6 +1,8 @@
 package ir.arcademy.blog.modules.posts.repository;
 
 import ir.arcademy.blog.modules.posts.model.Posts;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +21,6 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
             "(coalesce(:#{#posts.categories},null) is null or " +
             "pc in (:#{#posts.categories})) " +
             "group by p.id having count (p.id) >= :num")
-    List<Posts> findBySearch(Posts posts,@Param("num") Long size);
+    Page<Posts> findBySearch(Posts posts, @Param("num") Long size, Pageable pageable);
 
 }

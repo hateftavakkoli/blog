@@ -71,7 +71,7 @@ public class PostsService {
         postsRepository.deleteById(id);
     }
 
-    public List<Posts> findBySearch(Posts posts) {
-        return postsRepository.findBySearch(posts, (posts.getCategories()!= null ? (long) posts.getCategories().size() : 0));
+    public Page<Posts> findBySearch(Posts posts, Pageable pageable) {
+        return postsRepository.findBySearch(posts, (posts.getCategories()!= null ? (long) posts.getCategories().size() : 0),pageable);
     }
 }
